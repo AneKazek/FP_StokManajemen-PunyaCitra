@@ -98,7 +98,20 @@ Public Class BarangKeluarForm
         dgvKeluar = New DataGridView()
         dgvKeluar.Location = New Point(25, 310) : dgvKeluar.Size = New Size(980, 350)
         dgvKeluar.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right Or AnchorStyles.Bottom
-        ModernUI.StyleDataGridView(dgvKeluar) : Me.Controls.Add(dgvKeluar)
+        ModernUI.StyleDataGridView(dgvKeluar)
+        
+        ' Fix: Explicitly define columns to prevent invalid casting errors
+        dgvKeluar.AutoGenerateColumns = False
+        dgvKeluar.Columns.Add(New DataGridViewTextBoxColumn() With {.Name = "ID", .DataPropertyName = "ID", .Visible = False})
+        dgvKeluar.Columns.Add(New DataGridViewTextBoxColumn() With {.Name = "NoTransaksi", .HeaderText = "No. Transaksi", .DataPropertyName = "No. Transaksi"})
+        dgvKeluar.Columns.Add(New DataGridViewTextBoxColumn() With {.Name = "Kode", .HeaderText = "Kode", .DataPropertyName = "Kode"})
+        dgvKeluar.Columns.Add(New DataGridViewTextBoxColumn() With {.Name = "NamaBarang", .HeaderText = "Nama Barang", .DataPropertyName = "Nama Barang"})
+        dgvKeluar.Columns.Add(New DataGridViewTextBoxColumn() With {.Name = "Jumlah", .HeaderText = "Jumlah", .DataPropertyName = "Jumlah"})
+        dgvKeluar.Columns.Add(New DataGridViewTextBoxColumn() With {.Name = "Tujuan", .HeaderText = "Tujuan", .DataPropertyName = "Tujuan"})
+        dgvKeluar.Columns.Add(New DataGridViewTextBoxColumn() With {.Name = "Tanggal", .HeaderText = "Tanggal", .DataPropertyName = "Tanggal"})
+        dgvKeluar.Columns.Add(New DataGridViewTextBoxColumn() With {.Name = "Keterangan", .HeaderText = "Keterangan", .DataPropertyName = "Keterangan"})
+        
+        Me.Controls.Add(dgvKeluar)
     End Sub
 
     Private Sub LoadBarang()
@@ -123,7 +136,6 @@ Public Class BarangKeluarForm
             "SELECT bk.KeluarID AS 'ID',bk.NoTransaksi AS 'No. Transaksi',b.KodeBarang AS 'Kode',b.NamaBarang AS 'Nama Barang'," &
             "bk.Jumlah,bk.Tujuan,bk.TanggalKeluar AS 'Tanggal',COALESCE(bk.Keterangan,'') AS 'Keterangan' " &
             "FROM BarangKeluar bk JOIN Barang b ON bk.BarangID=b.BarangID ORDER BY bk.TanggalKeluar DESC,bk.KeluarID DESC")
-        If dgvKeluar.Columns.Contains("ID") Then dgvKeluar.Columns("ID").Visible = False
     End Sub
 
     Private Sub GenerateNo()
